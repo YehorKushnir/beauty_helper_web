@@ -8,6 +8,8 @@ import {RegisterDto} from "@/types/register-dto";
 type AuthState = {
     user: User | null
     accessToken: string | null
+    loading: boolean
+    setLoading: (value: boolean) => void
     setAccessToken: (token: string | null) => void
     setUser: (user: User | null) => void
     clear: () => void
@@ -19,6 +21,8 @@ type AuthState = {
 export const useAuthStore = create<AuthState>(set => ({
     user: null,
     accessToken: null,
+    loading: true,
+    setLoading: (value) => set({loading: value}),
     setAccessToken: token => set({accessToken: token}),
     setUser: user => set({user}),
     clear: () => set({accessToken: null}),
@@ -40,12 +44,14 @@ export const useAuthStore = create<AuthState>(set => ({
                 accessToken: data.access,
                 user: data.user
             })
+            localStorage.setItem("hasSession", "1")
         } catch (e) {
             showError(e)
         }
     },
     logout: async () => {
         void $api.post('/auth/logout')
+        localStorage.removeItem("hasSession")
         set({user: null, accessToken: null})
     }
 }))

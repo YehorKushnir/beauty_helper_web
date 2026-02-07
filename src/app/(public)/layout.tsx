@@ -1,6 +1,5 @@
 import {redirect} from 'next/navigation'
 import {ReactNode} from "react";
-import {UserHydrator} from "@/shared/model/user/ui/user-hydrator";
 import {checkAuthRequest} from "@/features/auth/check-auth/api/check-auth";
 
 interface Props {
@@ -10,13 +9,9 @@ interface Props {
 export default async function Layout({children}: Props) {
     const authData = await checkAuthRequest()
 
-    if (!authData) {
-        redirect('/login')
+    if (authData) {
+        redirect('/dashboard')
     }
 
-    return (
-        <UserHydrator authData={authData}>
-            {children}
-        </UserHydrator>
-    )
+    return children
 }

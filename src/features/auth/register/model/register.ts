@@ -14,5 +14,6 @@ export async function register(dto: RegisterDto) {
         setAccess(data.access)
     } catch (e) {
         showToastError(e)
+        throw e
     }
 }

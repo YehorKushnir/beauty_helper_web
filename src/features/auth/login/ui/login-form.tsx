@@ -38,9 +38,7 @@ export function LoginForm({className, ...props}: ComponentProps<"div">) {
 
     const onSubmit = async (data: z.infer<typeof loginSchema>) => {
         await login(data)
-            .then(() => {
-                router.replace('/dashboard')
-            })
+            .then(() => router.replace('/dashboard'))
     }
 
     return (

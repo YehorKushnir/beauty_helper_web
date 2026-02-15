@@ -3,6 +3,7 @@ import "./globals.css";
 import {ReactNode} from "react";
 import {Toaster} from "@/shared/ui/shad-cn/sonner";
 import {ThemeProvider} from "@/shared/lib/theme/theme-provider";
+import QueryProvider from '@/shared/lib/query-provider'
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -25,7 +26,9 @@ export default async function RootLayout({children}: Readonly<AppProps>) {
             enableSystem
             disableTransitionOnChange
         >
-            {children}
+            <QueryProvider>
+                {children}
+            </QueryProvider>
             <Toaster/>
         </ThemeProvider>
         </body>

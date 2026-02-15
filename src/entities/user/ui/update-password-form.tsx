@@ -7,6 +7,7 @@ import LoadingButton from "@/shared/ui/loading-button";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {z} from "zod";
 import {updatePassword} from "@/entities/user/model/update-password";
+import {useUserStore} from '@/shared/model/user/model/store'
 
 const formSchema = z.object({
     password: z
@@ -39,12 +40,14 @@ const formSchema = z.object({
     )
 
 export default function UpdatePasswordForm() {
+    const user = useUserStore(state => state.user)
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             password: "",
             password_new: "",
-            password_confirmation: "",
+            password_confirmation: ""
         }
     })
 
@@ -56,6 +59,12 @@ export default function UpdatePasswordForm() {
         <div className="flex gap-8 flex-col sm:flex-row">
             <form onSubmit={form.handleSubmit(onSubmit)} className={'flex-1 min-w-70'}>
                 <FieldGroup>
+                    <input
+                        name="username"
+                        autoComplete="username"
+                        defaultValue={user?.email}
+                        hidden
+                    />
                     <Controller
                         name={'password'}
                         control={form.control}
@@ -76,6 +85,7 @@ export default function UpdatePasswordForm() {
                                     id="password"
                                     type="password"
                                     required
+                                    autoComplete="current-password"
                                 />
                                 {fieldState.invalid && (
                                     <FieldError errors={[fieldState.error]}/>

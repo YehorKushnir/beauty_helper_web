@@ -8,6 +8,7 @@ interface Props {
 }
 
 export default async function Layout({children}: Props) {
+    console.log(1)
     const authData = await checkAuthRequest()
 
     if (!authData) {

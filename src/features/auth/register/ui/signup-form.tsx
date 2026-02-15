@@ -39,7 +39,7 @@ export function SignupForm({className, ...props}: ComponentProps<"div">) {
 
     const onSubmit = async (data: z.infer<typeof registerSchema>) => {
         await register(data)
-        router.replace('/dashboard')
+            .then(() => router.replace('/dashboard'))
     }
 
     return (

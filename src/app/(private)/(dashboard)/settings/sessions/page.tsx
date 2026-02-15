@@ -1,14 +1,19 @@
-import SessionItem from "@/entities/session/ui/session-item";
 import {getSessions} from "@/entities/session/api/get-sessions";
+import {HydrationBoundary, QueryClient} from '@tanstack/react-query'
+import {dehydrate} from '@tanstack/query-core'
+import SessionList from '@/entities/session/ui/session-list'
 
 export default async function Page() {
-    const sessions = await getSessions()
+    const queryClient = new QueryClient()
+
+    await queryClient.prefetchQuery({
+        queryKey: ['sessions'],
+        queryFn: getSessions
+    })
 
     return (
-        <div className="flex gap-4 flex-col">
-            {sessions.map((session) => (
-                <SessionItem key={session.id} session={session}/>
-            ))}
-        </div>
+        <HydrationBoundary state={dehydrate(queryClient)}>
+           <SessionList/>
+        </HydrationBoundary>
     )
 }

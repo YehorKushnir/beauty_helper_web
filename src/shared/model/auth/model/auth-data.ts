@@ -1,6 +1,6 @@
-import {User} from "@/entities/user/model/types";
+import { User } from '@/entities/user/model/types'
 
 export type AuthData = {
-    access: string
-    user: User
+  access: string
+  user: User
 }

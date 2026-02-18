@@ -1,14 +1,12 @@
-import {Session} from "@/entities/session/model/types";
-import {serverApiRequestWrapper} from "@/shared/lib/api/server-api-request-wrapper";
-import {handleServerError} from "@/shared/lib/errors/server-api/handle-server-error";
+import { showToastError } from '@/shared/lib/toast/show-toast-error'
+import { $api } from '@/shared/lib/api/axios'
+import { Session } from '@/entities/session/model/types'
 
 export async function getSessions() {
-    try {
-        return await serverApiRequestWrapper<Session[]>('/users/sessions')
-    } catch (e) {
-        throw handleServerError(e, {
-            scope: 'sessions',
-            action: 'getSessions'
-        })
-    }
+  try {
+    return (await $api.get<Session[]>('/users/sessions')).data
+  } catch (e) {
+    showToastError(e)
+    throw e
+  }
 }

@@ -1,10 +1,8 @@
-import {getUser} from "@/entities/user/api/user";
-import UserProfileForm from "@/entities/user/ui/user-profile-form";
+import { getServerUser } from '@/entities/user/api/get-server-user'
+import UserProfileForm from '@/entities/user/ui/user-profile-form'
 
 export default function Page() {
-    const user = getUser()
+  const user = getServerUser()
 
-    return (
-        <UserProfileForm userPromise={user}/>
-    )
+  return <UserProfileForm userPromise={user} />
 }

@@ -1,9 +1,9 @@
-import {logoutRequest} from "@/features/auth/logout/api/api";
-import {useUserStore} from "@/shared/model/user/model/store";
+import { logoutRequest } from '@/features/auth/logout/api/api'
+import { useUserStore } from '@/shared/model/user/model/store'
 
 export async function logout() {
-    const clear = useUserStore.getState().clear
+  const clear = useUserStore.getState().clear
 
-    await logoutRequest()
-    clear()
+  await logoutRequest()
+  clear()
 }

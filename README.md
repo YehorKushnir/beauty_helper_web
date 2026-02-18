@@ -24,3 +24,4 @@ Built with Next.js App Router and modern frontend patterns, focusing on scalabil
 ```bash
 npm install
 npm run dev
+```

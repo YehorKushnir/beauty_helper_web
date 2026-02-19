@@ -14,27 +14,7 @@ import Link from 'next/link'
 import SidebarUser from '@/widgets/sidebar/ui/sidebar-user'
 import { ComponentProps, Suspense } from 'react'
 import { getServerUser } from '@/entities/user/api/get-server-user'
-
-const data = {
-  navMain: [
-    {
-      title: 'Dashboard',
-      url: '/dashboard'
-    },
-    {
-      title: 'Login',
-      url: '/login'
-    },
-    {
-      title: 'Sign Up',
-      url: '/signup'
-    },
-    {
-      title: 'Otp',
-      url: '/otp'
-    }
-  ]
-}
+import { NavMain } from '@/widgets/sidebar/model/nav-main'
 
 export async function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
   const user = getServerUser()
@@ -60,7 +40,7 @@ export async function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <SidebarGroup>
           <SidebarMenu>
-            {data.navMain.map((item, i) => (
+            {NavMain.map((item, i) => (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton asChild>
                   <Link href={item.url} data-active={i === 0} prefetch={true}>

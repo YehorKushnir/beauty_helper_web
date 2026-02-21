@@ -7,6 +7,7 @@ interface Props {
   searchParams: Promise<{
     page?: string
     limit?: string
+    search?: string
   }>
 }
 
@@ -15,20 +16,22 @@ export default async function Page({ searchParams }: Props) {
   const queryClient = new QueryClient()
   const page = Number(params.page ?? 1)
   const limit = Number(params.limit ?? 10)
+  const search = params.search ?? ''
 
   await queryClient.prefetchQuery({
-    queryKey: ['clients', { page, limit }],
+    queryKey: ['clients', { page, limit, search }],
     queryFn: () =>
       getServerClientForTable({
         status: 'ACTIVE',
         page: page,
-        limit: limit
+        limit: limit,
+        search: search
       })
   })
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <ClientTable initPage={page} initLimit={limit} />
+      <ClientTable initPage={page} initLimit={limit} initSearch={search} />
     </HydrationBoundary>
   )
 }

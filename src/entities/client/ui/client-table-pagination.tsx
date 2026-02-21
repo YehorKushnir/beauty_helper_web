@@ -18,7 +18,7 @@ interface DataTablePaginationProps {
   initLimit: number
 }
 
-export default function DataTablePagination({
+export default function ClientTablePagination({
   pages,
   total,
   initPage,

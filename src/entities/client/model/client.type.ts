@@ -7,7 +7,7 @@ type BaseClient = {
   description: string | null
   status: ClientStatus
   statusChangedAt: string | null
-  createdAt: Date
+  createdAt: string | null
 }
 
 export type ClientSearchItem = Pick<BaseClient, 'id' | 'name' | 'phone'>

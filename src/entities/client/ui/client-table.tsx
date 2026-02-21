@@ -5,26 +5,31 @@ import { clientTableColumns } from '@/entities/client/model/client-table-columns
 import { useQuery } from '@tanstack/react-query'
 import { getClientForTable } from '@/entities/client/api/get-client-for-table'
 import { useClientStore } from '@/entities/client/model/client-store'
-import DataTablePagination from '@/shared/ui/data-table-pagination'
 import TableSkeleton from '@/shared/ui/data-table-skeleton'
+import ClientTableOptions from '@/entities/client/ui/client-table-options'
+import ClientTablePagination from '@/entities/client/ui/client-table-pagination'
 
 interface Props {
   initPage: number
   initLimit: number
+  initSearch: string
 }
 
-export default function ClientTable({ initPage, initLimit }: Props) {
+export default function ClientTable({ initPage, initLimit, initSearch }: Props) {
   const page = useClientStore((state) => state.page) ?? initPage
   const limit = useClientStore((state) => state.limit) ?? initLimit
+  const storeSearch = useClientStore((state) => state.search)
+  const search = storeSearch ? storeSearch : initSearch
 
   const { data, isFetching, status } = useQuery({
-    queryKey: ['clients', { page, limit }],
+    queryKey: ['clients', { page, limit, search }],
     queryFn: ({ signal }) =>
       getClientForTable(
         {
           status: 'ACTIVE',
           page,
-          limit
+          limit,
+          search
         },
         signal
       ),
@@ -42,6 +47,7 @@ export default function ClientTable({ initPage, initLimit }: Props) {
 
   return (
     <div className="w-full flex flex-col flex-1 min-h-0 gap-4">
+      <ClientTableOptions initSearch={initSearch} />
       <DataTable
         isFetching={isFetching}
         columns={clientTableColumns}
@@ -51,7 +57,7 @@ export default function ClientTable({ initPage, initLimit }: Props) {
         page={page ?? initPage}
         limit={limit ?? initLimit}
       />
-      <DataTablePagination
+      <ClientTablePagination
         pages={data.pages}
         total={data.total}
         initPage={initPage}

@@ -4,6 +4,10 @@ import { extractAxiosErrorMessage } from '@/shared/lib/errors/axios/extract-axio
 import { mapStatusToError } from '@/shared/lib/errors/map-status-error'
 
 export function mapAxiosError(error: unknown): AppError | Error {
+  if (axios.isAxiosError(error) && error.code === 'ERR_CANCELED') {
+    return error
+  }
+
   if (!axios.isAxiosError(error)) {
     return error instanceof Error ? error : new InvariantError('Unknown client error')
   }

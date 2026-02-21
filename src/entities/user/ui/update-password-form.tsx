@@ -11,12 +11,16 @@ import { useUserStore } from '@/shared/model/user/model/store'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { getSessions } from '@/entities/user/api/get-auth-methods'
 import { PasswordDto } from '@/entities/user/model/password-dto'
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { Button } from '@/shared/ui/shad-cn/button'
 import { ChevronsUpDown, KeyRound } from 'lucide-react'
 import { useState } from 'react'
 import { Item, ItemActions, ItemContent, ItemMedia, ItemTitle } from '@/shared/ui/shad-cn/item'
 import { removePassword } from '@/entities/user/api/remove-password'
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger
+} from '@/shared/ui/shad-cn/collapsible'
 
 const formSchema = z
   .object({

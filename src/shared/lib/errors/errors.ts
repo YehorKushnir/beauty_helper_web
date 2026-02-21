@@ -46,6 +46,19 @@ export class InvariantError extends AppError {
   }
 }
 
+export class CanceledError extends AppError {
+  readonly type = 'CANCELED'
+  readonly status = undefined
+
+  constructor(message = 'Request canceled') {
+    super(message)
+  }
+
+  override get isUserError() {
+    return false
+  }
+}
+
 export class ApiError extends AppError {
   readonly type = 'API_ERROR'
 

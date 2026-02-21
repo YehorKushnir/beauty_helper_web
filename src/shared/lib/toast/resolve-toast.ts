@@ -6,6 +6,7 @@ import {
   ApiError,
   InvariantError
 } from '@/shared/lib/errors/errors'
+import { CanceledError } from 'axios'
 
 type ToastVariant = 'error' | 'warning' | 'info'
 
@@ -16,6 +17,7 @@ interface ToastData {
 
 export function resolveToast(e: unknown): ToastData | null {
   if (e instanceof UnauthorizedError) return null
+  if (e instanceof CanceledError) return null
 
   if (e instanceof AppError) {
     switch (true) {

@@ -19,13 +19,14 @@ interface Props {
 export default function Layout({ children }: Props) {
   return (
     <SidebarProvider
+      className="h-screen"
       style={
         {
           '--sidebar-width': '19rem'
         } as CSSProperties
       }>
       <AppSidebar />
-      <SidebarInset className="">
+      <SidebarInset className="flex-1 flex flex-col min-w-0 min-h-0">
         <header className="flex h-16 shrink-0 items-center gap-2 px-4">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 data-[orientation=vertical]:h-4" />
@@ -43,7 +44,7 @@ export default function Layout({ children }: Props) {
           <div className="flex-1" />
           <ToggleThemeButton />
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">{children}</div>
+        <div className="flex flex-1 min-h-0 flex-col gap-4 p-4 pt-0">{children}</div>
       </SidebarInset>
     </SidebarProvider>
   )

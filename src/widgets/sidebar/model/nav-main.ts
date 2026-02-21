@@ -4,7 +4,7 @@ export const NavMain = [
     url: '/dashboard'
   },
   {
-    title: 'Client',
+    title: 'Clients',
     url: '/clients'
   }
 ]

@@ -8,8 +8,7 @@ export default async function Page() {
 
   await queryClient.prefetchQuery({
     queryKey: ['sessions'],
-    queryFn: getServerSessions,
-    staleTime: 60 * 1000
+    queryFn: getServerSessions
   })
 
   return (

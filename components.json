@@ -14,10 +14,10 @@
   "rtl": false,
   "aliases": {
     "components": "@/shared/ui/shad-cn",
-    "utils": "@/lib/utils",
-    "ui": "@/components/ui",
-    "lib": "@/lib",
-    "hooks": "@/hooks"
+    "utils": "@/shared/lib/utils",
+    "ui": "@/shared/ui/shad-cn",
+    "lib": "@/shared/lib/shad-cn",
+    "hooks": "@/shared/lib/hooks"
   },
   "registries": {}
 }

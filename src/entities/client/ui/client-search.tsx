@@ -43,7 +43,7 @@ export default function ClientSearch({ initSearch }: Props) {
   }
 
   return (
-    <Field className="max-w-sm">
+    <Field className="w-full">
       <InputGroup>
         <InputGroupAddon align="inline-start">
           <SearchIcon className="text-muted-foreground" />

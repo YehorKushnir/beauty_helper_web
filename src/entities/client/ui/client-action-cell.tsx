@@ -20,19 +20,26 @@ import {
   ShieldX,
   Trash
 } from 'lucide-react'
-import { ClientTableItem } from '@/entities/client/model/client.type'
-import { Row } from '@tanstack/table-core'
 import { UseMutationResult } from '@tanstack/react-query'
 import { useClientStore } from '@/entities/client/model/client-store'
 
 interface Props {
-  row: Row<ClientTableItem>
+  id: string
+  status: Exclude<ClientStatus, 'DELETED'>
+  name: string
+  phone: string | null
+  description: string | null
   mutations: ReturnType<typeof useClientMutations>
 }
 
-export default function ClientActionsCell({ row, mutations }: Props) {
-  const status = row.original.status as Exclude<ClientStatus, 'DELETED'>
-  const id = row.original.id
+export default function ClientActionsCell({
+  id,
+  status,
+  name,
+  phone,
+  description,
+  mutations
+}: Props) {
   const [open, setOpen] = useState(false)
   const setEditing = useClientStore((state) => state.setEditing)
 
@@ -71,9 +78,9 @@ export default function ClientActionsCell({ row, mutations }: Props) {
           onClick={() =>
             setEditing(true, {
               id,
-              name: row.original.name,
-              phone: row.original.phone ?? '',
-              description: row.original.description ?? ''
+              name: name,
+              phone: phone ?? '',
+              description: description ?? ''
             })
           }>
           <PencilLine />

@@ -1,7 +1,7 @@
 import { HydrationBoundary, QueryClient } from '@tanstack/react-query'
 import { dehydrate } from '@tanstack/query-core'
 import { getServerClientForTable } from '@/entities/client/api/get-server-client-for-table'
-import ClientTable from '@/entities/client/ui/client-table'
+import ClientView from '@/entities/client/ui/client-view'
 import { ClientStatus } from '@/entities/client/model/client-status.type'
 
 interface Props {
@@ -32,9 +32,21 @@ export default async function Page({ searchParams }: Props) {
       })
   })
 
+  await queryClient.prefetchInfiniteQuery({
+    queryKey: ['clients', { search, status }],
+    queryFn: ({ pageParam = 1 }) =>
+      getServerClientForTable({
+        status: status === 'ALL' ? undefined : status,
+        page: pageParam,
+        limit: 20,
+        search
+      }),
+    initialPageParam: 1
+  })
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <ClientTable initPage={page} initLimit={limit} initSearch={search} initStatus={status} />
+      <ClientView initPage={page} initLimit={limit} initSearch={search} initStatus={status} />
     </HydrationBoundary>
   )
 }

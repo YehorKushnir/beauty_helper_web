@@ -2,8 +2,6 @@ import { Field, FieldError, FieldGroup, FieldLabel } from '@/shared/ui/shad-cn/f
 import { Controller, UseFormReturn } from 'react-hook-form'
 import { Input } from '@/shared/ui/shad-cn/input'
 import { Textarea } from '@/shared/ui/shad-cn/textarea'
-import { DialogClose, DialogFooter } from '@/shared/ui/shad-cn/dialog'
-import { Button } from '@/shared/ui/shad-cn/button'
 import LoadingButton from '@/shared/ui/loading-button'
 import { z } from 'zod'
 import { clientSchema } from '@/entities/client/model/client-schema'
@@ -78,14 +76,9 @@ export default function ClientCreateUpdateFrom({
           )}
         />
       </FieldGroup>
-      <DialogFooter>
-        <LoadingButton type="submit" loading={mutation.isPending}>
-          {isUpdate ? 'Save' : 'Create'}
-        </LoadingButton>
-        <DialogClose asChild>
-          <Button variant="outline">Cancel</Button>
-        </DialogClose>
-      </DialogFooter>
+      <LoadingButton type="submit" loading={mutation.isPending}>
+        {isUpdate ? 'Save' : 'Create'}
+      </LoadingButton>
     </form>
   )
 }

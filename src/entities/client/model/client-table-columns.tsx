@@ -3,6 +3,7 @@ import { ClientTableItem } from '@/entities/client/model/client.type'
 import { formatDateTime } from '@/shared/lib/format-date'
 import ClientActionsCell from '@/entities/client/ui/client-action-cell'
 import { useClientMutations } from '@/entities/client/model/use-client-mutations'
+import { ClientStatus } from '@/entities/client/model/client-status.type'
 
 export const getClientColumns = (
   mutations: ReturnType<typeof useClientMutations>
@@ -47,6 +48,15 @@ export const getClientColumns = (
     id: 'actions',
     minSize: 40,
     maxSize: 40,
-    cell: ({ row }) => <ClientActionsCell row={row} mutations={mutations} />
+    cell: ({ row }) => (
+      <ClientActionsCell
+        id={row.original.id}
+        name={row.original.name}
+        phone={row.original.phone}
+        description={row.original.description}
+        status={row.original.status as Exclude<ClientStatus, 'DELETED'>}
+        mutations={mutations}
+      />
+    )
   }
 ]

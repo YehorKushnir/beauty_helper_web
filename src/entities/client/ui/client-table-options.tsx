@@ -3,6 +3,7 @@ import ClientSearch from '@/entities/client/ui/client-search'
 import ClientStatusTabs from '@/entities/client/ui/client-status-tabs'
 import { ClientStatus } from '@/entities/client/model/client-status.type'
 import ClientUpdateDialog from '@/entities/client/ui/client-update-dialog'
+import { useIsMobile } from '@/shared/lib/hooks/use-mobile'
 
 interface Props {
   initSearch: string
@@ -10,14 +11,19 @@ interface Props {
 }
 
 export default function ClientTableOptions({ initSearch, initStatus }: Props) {
+  const isMobile = useIsMobile()
   return (
     <div className={'flex items-center justify-between gap-2'}>
       <div className={'w-full flex items-center gap-2'}>
         <ClientStatusTabs initStatus={initStatus} />
         <ClientSearch initSearch={initSearch} />
       </div>
-      <ClientCreateDialog />
-      <ClientUpdateDialog />
+      {!isMobile && (
+        <>
+          <ClientCreateDialog />
+          <ClientUpdateDialog />
+        </>
+      )}
     </div>
   )
 }

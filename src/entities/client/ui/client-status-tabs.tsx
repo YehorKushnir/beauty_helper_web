@@ -24,7 +24,7 @@ export default function ClientStatusTabs({ initStatus }: Props) {
 
   return (
     <Tabs value={status} onValueChange={handleStatusChange}>
-      <TabsList>
+      <TabsList className={'w-full'}>
         <TabsTrigger value="ALL">All</TabsTrigger>
         <TabsTrigger value="ACTIVE">Active</TabsTrigger>
         <TabsTrigger value="BANNED">Banned</TabsTrigger>

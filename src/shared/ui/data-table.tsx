@@ -58,7 +58,7 @@ export default function DataTable<TData, TValue>({
   return (
     <div className="flex-1 overflow-hidden rounded-md border relative">
       <div className="h-full overflow-y-auto">
-        <Table className={'h-full overflow-visible!'}>
+        <Table className="table-fixed w-full">
           <TableHeader className={'sticky top-0 z-10 bg-background shadow-2xs'}>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>

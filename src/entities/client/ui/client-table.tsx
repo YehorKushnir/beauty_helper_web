@@ -1,15 +1,14 @@
-'use client'
-
-import DataTable from '@/shared/ui/data-table'
+import { getClientColumns } from '@/entities/client/model/client-table-columns'
+import { useClientMutations } from '@/entities/client/model/use-client-mutations'
+import { useClientStore } from '@/entities/client/model/client-store'
 import { useQuery } from '@tanstack/react-query'
 import { getClientForTable } from '@/entities/client/api/get-client-for-table'
-import { useClientStore } from '@/entities/client/model/client-store'
+import { ClientStatus } from '@/entities/client/model/client-status.type'
 import TableSkeleton from '@/shared/ui/data-table-skeleton'
 import ClientTableOptions from '@/entities/client/ui/client-table-options'
+import DataTable from '@/shared/ui/data-table'
 import ClientTablePagination from '@/entities/client/ui/client-table-pagination'
-import { ClientStatus } from '@/entities/client/model/client-status.type'
-import { useClientMutations } from '@/entities/client/model/use-client-mutations'
-import { getClientColumns } from '@/entities/client/model/client-table-columns'
+import { useIsMobile } from '@/shared/lib/hooks/use-mobile'
 
 interface Props {
   initPage: number
@@ -19,6 +18,7 @@ interface Props {
 }
 
 export default function ClientTable({ initPage, initLimit, initSearch, initStatus }: Props) {
+  const isMobile = useIsMobile()
   const mutations = useClientMutations()
   const page = useClientStore((state) => state.page) ?? initPage
   const limit = useClientStore((state) => state.limit) ?? initLimit
@@ -42,7 +42,8 @@ export default function ClientTable({ initPage, initLimit, initSearch, initStatu
         signal
       ),
     staleTime: 60 * 1000,
-    placeholderData: (prev) => prev
+    placeholderData: (prev) => prev,
+    enabled: !isMobile
   })
 
   const isAnyPending =
@@ -63,7 +64,7 @@ export default function ClientTable({ initPage, initLimit, initSearch, initStatu
   }
 
   return (
-    <div className="w-full flex flex-col flex-1 min-h-0 gap-4">
+    <>
       <ClientTableOptions initSearch={initSearch} initStatus={initStatus} />
       <DataTable
         isFetching={isAnyPending}
@@ -80,6 +81,6 @@ export default function ClientTable({ initPage, initLimit, initSearch, initStatu
         initPage={initPage}
         initLimit={initLimit}
       />
-    </div>
+    </>
   )
 }

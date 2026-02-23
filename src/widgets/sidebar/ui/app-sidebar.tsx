@@ -10,11 +10,10 @@ import {
   SidebarMenuButton,
   SidebarMenuItem
 } from '@/shared/ui/shad-cn/sidebar'
-import Link from 'next/link'
 import SidebarUser from '@/widgets/sidebar/ui/sidebar-user'
 import { ComponentProps, Suspense } from 'react'
 import { getServerUser } from '@/entities/user/api/get-server-user'
-import { NavMain } from '@/widgets/sidebar/model/nav-main'
+import NavMenu from '@/widgets/sidebar/ui/nav-menu'
 
 export async function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
   const user = getServerUser()
@@ -39,17 +38,7 @@ export async function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarMenu>
-            {NavMain.map((item, i) => (
-              <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton asChild>
-                  <Link href={item.url} data-active={i === 0} prefetch={true}>
-                    {item.title}
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
+          <NavMenu />
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>

@@ -15,12 +15,11 @@ import { Input } from '@/shared/ui/shad-cn/input'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { clientSchema } from '@/entities/client/model/client-schema'
-import { createClient } from '@/entities/client/api/create-client'
 import { Textarea } from '@/shared/ui/shad-cn/textarea'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { z } from 'zod'
 import { useState } from 'react'
 import LoadingButton from '@/shared/ui/loading-button'
+import { useClientMutations } from '@/entities/client/model/use-client-mutations'
 
 export default function ClientCreateDialog() {
   const [open, setOpen] = useState<boolean>(false)
@@ -34,18 +33,15 @@ export default function ClientCreateDialog() {
     }
   })
 
-  const queryClient = useQueryClient()
-
-  const mutation = useMutation({
-    mutationFn: (data: z.infer<typeof clientSchema>) => createClient(data),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['clients'] })
-      setOpen(false)
-    }
-  })
+  const mutation = useClientMutations().create
 
   const onSubmit = async (data: z.infer<typeof clientSchema>) => {
-    mutation.mutate(data)
+    mutation.mutate(data, {
+      onSettled: () => {
+        setOpen(false)
+        form.reset()
+      }
+    })
   }
 
   return (

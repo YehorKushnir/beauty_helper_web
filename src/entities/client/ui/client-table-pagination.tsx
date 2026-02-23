@@ -53,7 +53,7 @@ export default function ClientTablePagination({
     setPage(1)
     const params = new URLSearchParams(searchParams.toString())
     params.set('limit', String(value))
-    params.set('page', String(1))
+    params.set('page', '1')
     window.history.replaceState({}, '', `?${params.toString()}`)
   }
 

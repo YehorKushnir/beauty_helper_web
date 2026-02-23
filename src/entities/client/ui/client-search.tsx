@@ -3,7 +3,7 @@
 import { Field } from '@/shared/ui/shad-cn/field'
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/shared/ui/shad-cn/input-group'
 import { SearchIcon } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useRef, useState } from 'react'
 import { useClientStore } from '@/entities/client/model/client-store'
 import { useSearchParams } from 'next/navigation'
 
@@ -14,22 +14,33 @@ interface Props {
 export default function ClientSearch({ initSearch }: Props) {
   const searchParams = useSearchParams()
   const setSearchStore = useClientStore((state) => state.setSearch)
+  const setPage = useClientStore((state) => state.setPage)
   const [search, setSearch] = useState(initSearch)
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setSearchStore(search)
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const handleSearch = (value: string) => {
+    setSearch(value)
+
+    if (timerRef.current) {
+      clearTimeout(timerRef.current)
+    }
+
+    timerRef.current = setTimeout(() => {
+      setSearchStore(value)
+      setPage(1)
       const params = new URLSearchParams(searchParams.toString())
-      if (search) {
-        params.set('search', search)
+
+      if (value.trim()) {
+        params.set('search', value)
       } else {
         params.delete('search')
       }
+      params.set('page', '1')
+
       window.history.replaceState({}, '', `?${params.toString()}`)
     }, 400)
-
-    return () => clearTimeout(timer)
-  }, [search])
+  }
 
   return (
     <Field className="max-w-sm">
@@ -39,8 +50,8 @@ export default function ClientSearch({ initSearch }: Props) {
         </InputGroupAddon>
         <InputGroupInput
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search..."
+          onChange={(e) => handleSearch(e.target.value)}
+          placeholder="Search by name, phone and description..."
         />
       </InputGroup>
     </Field>

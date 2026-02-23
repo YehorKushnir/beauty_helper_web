@@ -1,8 +1,12 @@
 import { ColumnDef } from '@tanstack/table-core'
 import { ClientTableItem } from '@/entities/client/model/client.type'
 import { formatDateTime } from '@/shared/lib/format-date'
+import ClientActionsCell from '@/entities/client/ui/client-action-cell'
+import { useClientMutations } from '@/entities/client/model/use-client-mutations'
 
-export const clientTableColumns: ColumnDef<ClientTableItem>[] = [
+export const getClientColumns = (
+  mutations: ReturnType<typeof useClientMutations>
+): ColumnDef<ClientTableItem>[] => [
   {
     accessorKey: 'name',
     header: 'Client',
@@ -38,5 +42,11 @@ export const clientTableColumns: ColumnDef<ClientTableItem>[] = [
     minSize: 140,
     maxSize: 140,
     cell: (props) => formatDateTime(props.getValue<string>())
+  },
+  {
+    id: 'actions',
+    minSize: 40,
+    maxSize: 40,
+    cell: ({ row }) => <ClientActionsCell row={row} mutations={mutations} />
   }
 ]

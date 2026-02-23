@@ -6,7 +6,15 @@ import { ClientTableData } from '@/entities/client/model/client-table-data.type'
 
 export async function getClientForTable(dto: GetClientForTableDtoType, signal: AbortSignal) {
   try {
-    const query = qs.stringify(dto, { skipNulls: true })
+    const cleanDto = Object.fromEntries(
+      Object.entries(dto).filter(([_, value]) => {
+        if (value === null) return false
+        if (value === undefined) return false
+        return !(typeof value === 'string' && value.trim() === '')
+      })
+    )
+
+    const query = qs.stringify(cleanDto)
     return (await $api.get<ClientTableData>(`/client/find-for-table?${query}`, { signal })).data
   } catch (e) {
     showToastError(e)

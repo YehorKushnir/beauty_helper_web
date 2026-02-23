@@ -9,7 +9,6 @@ import {
   TableHeader,
   TableRow
 } from '@/shared/ui/shad-cn/table'
-import { Spinner } from '@/shared/ui/shad-cn/spinner'
 
 interface DataTableProps<TData, TValue> {
   isFetching: boolean
@@ -19,6 +18,27 @@ interface DataTableProps<TData, TValue> {
   page: number
   pages: number
   limit: number
+}
+
+import { useEffect, useState } from 'react'
+
+function useDelayedLoading(isLoading: boolean, delay = 300) {
+  const [show, setShow] = useState(false)
+
+  useEffect(() => {
+    if (!isLoading) {
+      setShow(false)
+      return
+    }
+
+    const timer = setTimeout(() => {
+      setShow(true)
+    }, delay)
+
+    return () => clearTimeout(timer)
+  }, [isLoading, delay])
+
+  return show
 }
 
 export default function DataTable<TData, TValue>({
@@ -44,6 +64,8 @@ export default function DataTable<TData, TValue>({
       }
     }
   })
+
+  const delayedLoading = useDelayedLoading(isFetching, 300)
 
   return (
     <div className="flex-1 overflow-hidden rounded-md border relative">
@@ -88,9 +110,9 @@ export default function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      {isFetching && (
-        <div className="absolute inset-0 bg-white/60 flex items-center justify-center">
-          <Spinner className={'size-8'} />
+      {delayedLoading && (
+        <div className="absolute inset-0 bg-white/40 flex items-center justify-center">
+          <div className="absolute top-10 h-0.5 w-full bg-primary animate-pulse" />
         </div>
       )}
     </div>

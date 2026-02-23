@@ -10,6 +10,14 @@ import {
   TableRow
 } from '@/shared/ui/shad-cn/table'
 import { useDelayedLoading } from '@/shared/lib/hooks/useDelayedLoading'
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle
+} from '@/shared/ui/shad-cn/empty'
+import { Users } from 'lucide-react'
 
 interface DataTableProps<TData, TValue> {
   isFetching: boolean
@@ -67,29 +75,34 @@ export default function DataTable<TData, TValue>({
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      key={cell.id}
-                      style={{ width: cell.column.getSize() }}
-                      className="truncate overflow-hidden whitespace-nowrap">
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No results.
-                </TableCell>
+            {table.getRowModel().rows.map((row) => (
+              <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell
+                    key={cell.id}
+                    style={{ width: cell.column.getSize() }}
+                    className="truncate overflow-hidden whitespace-nowrap">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
               </TableRow>
-            )}
+            ))}
           </TableBody>
         </Table>
       </div>
+      {!table.getRowModel().rows?.length && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <Empty>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <Users />
+              </EmptyMedia>
+              <EmptyTitle>Nothing here yet</EmptyTitle>
+              <EmptyDescription>Items you add will appear here.</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
+        </div>
+      )}
       {delayedLoading && (
         <div className="absolute inset-0 bg-white/40 flex items-center justify-center">
           <div className="absolute top-10 h-0.5 w-full bg-primary animate-pulse" />

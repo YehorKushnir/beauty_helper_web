@@ -2,24 +2,19 @@
 
 import {
   Dialog,
-  DialogClose,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger
 } from '@/shared/ui/shad-cn/dialog'
 import { Button } from '@/shared/ui/shad-cn/button'
-import { Field, FieldError, FieldGroup, FieldLabel } from '@/shared/ui/shad-cn/field'
-import { Input } from '@/shared/ui/shad-cn/input'
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { clientSchema } from '@/entities/client/model/client-schema'
-import { Textarea } from '@/shared/ui/shad-cn/textarea'
 import { z } from 'zod'
 import { useState } from 'react'
-import LoadingButton from '@/shared/ui/loading-button'
 import { useClientMutations } from '@/entities/client/model/use-client-mutations'
+import ClientCreateUpdateFrom from '@/entities/client/ui/client-create-update-from'
 
 export default function ClientCreateDialog() {
   const [open, setOpen] = useState<boolean>(false)
@@ -37,7 +32,7 @@ export default function ClientCreateDialog() {
 
   const onSubmit = async (data: z.infer<typeof clientSchema>) => {
     mutation.mutate(data, {
-      onSettled: () => {
+      onSuccess: () => {
         setOpen(false)
         form.reset()
       }
@@ -53,70 +48,7 @@ export default function ClientCreateDialog() {
         <DialogHeader>
           <DialogTitle>Add a new client</DialogTitle>
         </DialogHeader>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-7">
-          <FieldGroup>
-            <Controller
-              name={'name'}
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="name">Name</FieldLabel>
-                  <Input
-                    {...field}
-                    aria-invalid={fieldState.invalid}
-                    id="name"
-                    type="text"
-                    placeholder="Client name"
-                    required
-                    autoComplete="name"
-                  />
-                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                </Field>
-              )}
-            />
-            <Controller
-              name={'phone'}
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="phone">Phone</FieldLabel>
-                  <Input
-                    {...field}
-                    aria-invalid={fieldState.invalid}
-                    id="phone"
-                    type="tel"
-                    placeholder="+1 (234) 456-7890"
-                  />
-                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                </Field>
-              )}
-            />
-            <Controller
-              name={'description'}
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="description">Description</FieldLabel>
-                  <Textarea
-                    {...field}
-                    aria-invalid={fieldState.invalid}
-                    id="description"
-                    placeholder="Notes about the client..."
-                  />
-                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                </Field>
-              )}
-            />
-          </FieldGroup>
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DialogClose>
-            <LoadingButton type="submit" loading={mutation.isPending}>
-              Create
-            </LoadingButton>
-          </DialogFooter>
-        </form>
+        <ClientCreateUpdateFrom form={form} onSubmit={onSubmit} mutation={mutation} />
       </DialogContent>
     </Dialog>
   )

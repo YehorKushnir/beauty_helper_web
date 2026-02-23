@@ -15,6 +15,7 @@ import {
   ArchiveRestore,
   Eraser,
   MoreHorizontal,
+  PencilLine,
   ShieldCheck,
   ShieldX,
   Trash
@@ -22,6 +23,7 @@ import {
 import { ClientTableItem } from '@/entities/client/model/client.type'
 import { Row } from '@tanstack/table-core'
 import { UseMutationResult } from '@tanstack/react-query'
+import { useClientStore } from '@/entities/client/model/client-store'
 
 interface Props {
   row: Row<ClientTableItem>
@@ -32,6 +34,7 @@ export default function ClientActionsCell({ row, mutations }: Props) {
   const status = row.original.status as Exclude<ClientStatus, 'DELETED'>
   const id = row.original.id
   const [open, setOpen] = useState(false)
+  const setEditing = useClientStore((state) => state.setEditing)
 
   const mutate = (mutation: UseMutationResult<void, Error, string>) => {
     mutation.mutate(id)
@@ -64,6 +67,19 @@ export default function ClientActionsCell({ row, mutations }: Props) {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end">
+        <DropdownMenuItem
+          onClick={() =>
+            setEditing(true, {
+              id,
+              name: row.original.name,
+              phone: row.original.phone ?? '',
+              description: row.original.description ?? ''
+            })
+          }>
+          <PencilLine />
+          Edit
+        </DropdownMenuItem>
+
         {actionsByStatus[status].map(({ label, icon, mutation }) => (
           <DropdownMenuItem key={label} onClick={() => mutate(mutation)}>
             {icon}

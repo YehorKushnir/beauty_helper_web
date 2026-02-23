@@ -2,6 +2,7 @@ import ClientCreateDialog from '@/entities/client/ui/client-create-dialog'
 import ClientSearch from '@/entities/client/ui/client-search'
 import ClientStatusTabs from '@/entities/client/ui/client-status-tabs'
 import { ClientStatus } from '@/entities/client/model/client-status.type'
+import ClientUpdateDialog from '@/entities/client/ui/client-update-dialog'
 
 interface Props {
   initSearch: string
@@ -16,6 +17,7 @@ export default function ClientTableOptions({ initSearch, initStatus }: Props) {
         <ClientSearch initSearch={initSearch} />
       </div>
       <ClientCreateDialog />
+      <ClientUpdateDialog />
     </div>
   )
 }

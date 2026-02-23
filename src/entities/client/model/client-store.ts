@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { ClientStatus } from '@/entities/client/model/client-status.type'
+import { ClientUpdateDto } from '@/entities/client/model/client-create-update-dto.type'
 
 function getInitialPagination() {
   if (typeof window === 'undefined') {
@@ -21,10 +22,13 @@ interface ClientStore {
   limit: number | null
   search?: string
   status?: ClientStatus | 'ALL'
+  editing: boolean
+  editPayload: ClientUpdateDto | null
   setPage: (value: number) => void
   setLimit: (value: number) => void
   setSearch: (value: string) => void
   setStatus: (value: ClientStatus | 'ALL') => void
+  setEditing: (value: boolean, payload?: ClientUpdateDto) => void
 }
 
 export const useClientStore = create<ClientStore>((set) => ({
@@ -32,8 +36,13 @@ export const useClientStore = create<ClientStore>((set) => ({
   limit: getInitialPagination().limit,
   search: getInitialPagination().search,
   status: getInitialPagination().status,
+  editing: false,
+  editPayload: null,
   setPage: (value) => set({ page: value }),
   setLimit: (value) => set({ limit: value }),
   setSearch: (value) => set({ search: value }),
-  setStatus: (value) => set({ status: value })
+  setStatus: (value) => set({ status: value }),
+  setEditing: (value, payload) => {
+    set({ editing: value, editPayload: payload ?? null })
+  }
 }))

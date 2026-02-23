@@ -9,6 +9,7 @@ import {
   TableHeader,
   TableRow
 } from '@/shared/ui/shad-cn/table'
+import { useDelayedLoading } from '@/shared/lib/hooks/useDelayedLoading'
 
 interface DataTableProps<TData, TValue> {
   isFetching: boolean
@@ -18,27 +19,6 @@ interface DataTableProps<TData, TValue> {
   page: number
   pages: number
   limit: number
-}
-
-import { useEffect, useState } from 'react'
-
-function useDelayedLoading(isLoading: boolean, delay = 300) {
-  const [show, setShow] = useState(false)
-
-  useEffect(() => {
-    if (!isLoading) {
-      setShow(false)
-      return
-    }
-
-    const timer = setTimeout(() => {
-      setShow(true)
-    }, delay)
-
-    return () => clearTimeout(timer)
-  }, [isLoading, delay])
-
-  return show
 }
 
 export default function DataTable<TData, TValue>({

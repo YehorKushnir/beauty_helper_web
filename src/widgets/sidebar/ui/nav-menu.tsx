@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import { useClientStore } from '@/entities/client/model/client-store'
 import { getClientsPageParams } from '@/widgets/sidebar/model/get-clients-page-params'
 import { getNavMain } from '@/widgets/sidebar/model/nav-main'
+import { useEffect, useState } from 'react'
 
 export default function NavMenu() {
   const pathname = usePathname()
@@ -13,12 +14,15 @@ export default function NavMenu() {
   const limit = useClientStore((state) => state.limit)
   const search = useClientStore((state) => state.search)
   const status = useClientStore((state) => state.status)
+  const [params, setParams] = useState<string>('')
 
-  const clientsPagesParams = getClientsPageParams({ page, limit, search, status })
+  useEffect(() => {
+    setParams(getClientsPageParams({ page, limit, search, status }))
+  }, [page, limit, search, status])
 
   return (
     <SidebarMenu>
-      {getNavMain(clientsPagesParams).map((item) => (
+      {getNavMain(params).map((item) => (
         <SidebarMenuItem key={item.title}>
           <SidebarMenuButton asChild>
             <Link href={item.url} data-active={item.url.includes(pathname)} prefetch={true}>

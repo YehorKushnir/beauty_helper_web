@@ -22,16 +22,19 @@ export default function ClientTable({ initPage, initLimit, initSearch, initStatu
   const mutations = useClientMutations()
   const page = useClientStore((state) => state.page) ?? initPage
   const limit = useClientStore((state) => state.limit) ?? initLimit
-  const clientStatus = useClientStore((state) => state.status) ?? initStatus
-  const storeSearch = useClientStore((state) => state.search)
-  const search = storeSearch ? storeSearch : initSearch
+  const status = useClientStore((state) => state.status) ?? initStatus
+  const search = useClientStore((state) => state.search) ?? initSearch
 
-  const { data, isFetching, status } = useQuery({
-    queryKey: ['clients', { page, limit, search, status: clientStatus }],
+  const {
+    data,
+    isFetching,
+    status: queryStatus
+  } = useQuery({
+    queryKey: ['clients', { page, limit, search, status }],
     queryFn: ({ signal }) =>
       getClientForTable(
         {
-          status: clientStatus === 'ALL' ? undefined : clientStatus,
+          status: status === 'ALL' ? undefined : status,
           page,
           limit,
           search
@@ -51,11 +54,11 @@ export default function ClientTable({ initPage, initLimit, initSearch, initStatu
     mutations.removeData.isPending ||
     mutations.delete.isPending
 
-  if (status === 'pending') {
+  if (queryStatus === 'pending') {
     return <TableSkeleton rows={initLimit} columns={6} />
   }
 
-  if (status === 'error') {
+  if (queryStatus === 'error') {
     return 'Error'
   }
 

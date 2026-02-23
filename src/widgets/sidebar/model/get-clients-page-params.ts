@@ -4,7 +4,7 @@ import { ClientStatus } from '@/entities/client/model/client-status.type'
 interface Props {
   page: number | null
   limit: number | null
-  search: string
+  search?: string
   status?: ClientStatus | 'ALL'
 }
 

@@ -5,6 +5,8 @@
   "printWidth": 100,
   "bracketSameLine": true,
   "bracketSpacing": true,
+  "useTabs": true,
+  "tabWidth": 4,
   "arrowParens": "always",
   "endOfLine": "lf"
 }

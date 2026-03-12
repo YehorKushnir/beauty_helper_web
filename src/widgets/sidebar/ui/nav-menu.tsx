@@ -7,7 +7,7 @@ import { useClientStore } from '@/entities/client/model/client-store'
 import { getClientsPageParams } from '@/widgets/sidebar/model/get-clients-page-params'
 import { getServicesPageParams } from '@/widgets/sidebar/model/get-services-page-params'
 import { getNavMain } from '@/widgets/sidebar/model/nav-main'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { useServiceStore } from '@/entities/service/model/service-store'
 
 export default function NavMenu() {

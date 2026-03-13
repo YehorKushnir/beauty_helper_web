@@ -1,3 +1,5 @@
+'use client'
+
 import { ClientStatus } from '@/entities/client/model/client-status.type'
 import { Tabs, TabsList, TabsTrigger } from '@/shared/ui/shad-cn/tabs'
 import { useClientStore } from '@/entities/client/model/client-store'

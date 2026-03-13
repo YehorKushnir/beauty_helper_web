@@ -4,13 +4,13 @@ import { ServiceSearchItem } from '@/entities/service/model/service.type'
 import qs from 'qs'
 
 export async function getServerServiceByQuery(search: string) {
-	try {
-		const query = qs.stringify({ search }, { skipNulls: true })
-		return await serverApiRequestWrapper<ServiceSearchItem[]>(`/service/find-by-query?${query}`)
-	} catch (e) {
-		throw handleServerError(e, {
-			scope: 'service',
-			action: 'getServerServiceByQuery'
-		})
-	}
+  try {
+    const query = qs.stringify({ search }, { skipNulls: true })
+    return await serverApiRequestWrapper<ServiceSearchItem[]>(`/service/find-by-query?${query}`)
+  } catch (e) {
+    throw handleServerError(e, {
+      scope: 'service',
+      action: 'getServerServiceByQuery'
+    })
+  }
 }

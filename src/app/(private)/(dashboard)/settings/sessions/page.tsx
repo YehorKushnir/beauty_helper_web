@@ -1,6 +1,6 @@
 import { getServerSessions } from '@/entities/session/api/get-server-sessions'
 import { HydrationBoundary, QueryClient } from '@tanstack/react-query'
-import { dehydrate } from '@tanstack/query-core'
+import { dehydrate } from '@tanstack/react-query'
 import SessionList from '@/entities/session/ui/session-list'
 
 export default async function Page() {

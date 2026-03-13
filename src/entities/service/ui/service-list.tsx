@@ -8,85 +8,85 @@ import { useDelayedLoading } from '@/shared/lib/hooks/useDelayedLoading'
 import ServiceActionsCell from '@/entities/service/ui/service-action-cell'
 import { useServiceMutations } from '@/entities/service/model/use-service-mutations'
 import {
-	Empty,
-	EmptyDescription,
-	EmptyHeader,
-	EmptyMedia,
-	EmptyTitle
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle
 } from '@/shared/ui/shad-cn/empty'
 import { Users } from 'lucide-react'
 
 interface Props {
-	services: ServiceTableItem[]
-	queryStatus: 'error' | 'success' | 'pending'
-	isFetching: boolean
-	isPending: boolean
-	isFetchingNextPage: boolean
-	scrollRef: RefObject<HTMLDivElement | null>
-	loadMoreRef: RefObject<HTMLDivElement | null>
+  services: ServiceTableItem[]
+  queryStatus: 'error' | 'success' | 'pending'
+  isFetching: boolean
+  isPending: boolean
+  isFetchingNextPage: boolean
+  scrollRef: RefObject<HTMLDivElement | null>
+  loadMoreRef: RefObject<HTMLDivElement | null>
 }
 
 export default function ServiceList({
-	services,
-	queryStatus,
-	isFetching,
-	isPending,
-	isFetchingNextPage,
-	scrollRef,
-	loadMoreRef
+  services,
+  queryStatus,
+  isFetching,
+  isPending,
+  isFetchingNextPage,
+  scrollRef,
+  loadMoreRef
 }: Props) {
-	const delayedLoading = useDelayedLoading(isFetching, 300)
-	const mutations = useServiceMutations()
+  const delayedLoading = useDelayedLoading(isFetching, 300)
+  const mutations = useServiceMutations()
 
-	if (delayedLoading || isPending) {
-		return (
-			<div className="flex gap-3 flex-col">
-				<Skeleton className={'w-full h-15 rounded-lg'}></Skeleton>
-				<Skeleton className={'w-full h-15 rounded-lg'}></Skeleton>
-				<Skeleton className={'w-full h-15 rounded-lg'}></Skeleton>
-			</div>
-		)
-	}
+  if (delayedLoading || isPending) {
+    return (
+      <div className="flex gap-3 flex-col">
+        <Skeleton className={'w-full h-15 rounded-lg'}></Skeleton>
+        <Skeleton className={'w-full h-15 rounded-lg'}></Skeleton>
+        <Skeleton className={'w-full h-15 rounded-lg'}></Skeleton>
+      </div>
+    )
+  }
 
-	if (queryStatus === 'error') {
-		return 'Error'
-	}
+  if (queryStatus === 'error') {
+    return 'Error'
+  }
 
-	return (
-		<ItemGroup
-			className="h-full w-full flex flex-col gap-2.5 overflow-y-auto min-h-0"
-			ref={scrollRef}>
-			{services.map((item) => (
-				<Item key={item.id} variant="outline" size="sm">
-					<ItemContent>
-						<ItemTitle>{item.name}</ItemTitle>
-					</ItemContent>
-					<ItemActions>
-						<ServiceActionsCell
-							id={item.id}
-							name={item.name}
-							price={item.price}
-							durationMin={item.durationMin}
-							description={item.description}
-							status={item.status}
-							mutations={mutations}
-						/>
-					</ItemActions>
-				</Item>
-			))}
-			{isFetchingNextPage && <Skeleton className="min-h-15 h-15 w-full" />}
-			<div ref={loadMoreRef} />
-			{services.length === 0 && (
-				<Empty>
-					<EmptyHeader>
-						<EmptyMedia variant="icon">
-							<Users />
-						</EmptyMedia>
-						<EmptyTitle>Nothing here yet</EmptyTitle>
-						<EmptyDescription>Items you add will appear here.</EmptyDescription>
-					</EmptyHeader>
-				</Empty>
-			)}
-		</ItemGroup>
-	)
+  return (
+    <ItemGroup
+      className="h-full w-full flex flex-col gap-2.5 overflow-y-auto min-h-0"
+      ref={scrollRef}>
+      {services.map((item) => (
+        <Item key={item.id} variant="outline" size="sm">
+          <ItemContent>
+            <ItemTitle>{item.name}</ItemTitle>
+          </ItemContent>
+          <ItemActions>
+            <ServiceActionsCell
+              id={item.id}
+              name={item.name}
+              price={item.price}
+              durationMin={item.durationMin}
+              description={item.description}
+              status={item.status}
+              mutations={mutations}
+            />
+          </ItemActions>
+        </Item>
+      ))}
+      {isFetchingNextPage && <Skeleton className="min-h-15 h-15 w-full" />}
+      <div ref={loadMoreRef} />
+      {services.length === 0 && (
+        <Empty>
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              <Users />
+            </EmptyMedia>
+            <EmptyTitle>Nothing here yet</EmptyTitle>
+            <EmptyDescription>Items you add will appear here.</EmptyDescription>
+          </EmptyHeader>
+        </Empty>
+      )}
+    </ItemGroup>
+  )
 }

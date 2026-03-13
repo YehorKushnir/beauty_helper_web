@@ -1,10 +1,10 @@
 {
-	"prettier": {
-		"allowed": true
-	},
-	"languages": {
-		"TypeScript": {
-			"tab_size": 2
-		}
-	}
+  "prettier": {
+    "allowed": true
+  },
+  "languages": {
+    "TypeScript": {
+      "tab_size": 2
+    }
+  }
 }

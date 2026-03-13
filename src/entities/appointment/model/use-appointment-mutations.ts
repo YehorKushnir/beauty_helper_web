@@ -9,36 +9,35 @@ import { updateAppointment } from '@/entities/appointment/api/update-appointment
 import { z } from 'zod'
 
 export const useAppointmentMutations = () => {
-	const queryClient = useQueryClient()
+  const queryClient = useQueryClient()
 
-	const invalidate = async () =>
-		await queryClient.invalidateQueries({ queryKey: ['appointments'] })
+  const invalidate = async () => await queryClient.invalidateQueries({ queryKey: ['appointments'] })
 
-	return {
-		create: useMutation({
-			mutationFn: (data: z.infer<typeof appointmentSchema>) => createAppointment(data),
-			onSuccess: async () => await invalidate()
-		}),
-		update: useMutation({
-			mutationFn: ({ id, data }: { id: string; data: z.infer<typeof appointmentSchema> }) =>
-				updateAppointment(id, data),
-			onSuccess: async () => await invalidate()
-		}),
-		complete: useMutation({
-			mutationFn: (id: string) => completeAppointment(id),
-			onSuccess: async () => await invalidate()
-		}),
-		cancel: useMutation({
-			mutationFn: (id: string) => cancelAppointment(id),
-			onSuccess: async () => await invalidate()
-		}),
-		schedule: useMutation({
-			mutationFn: (id: string) => scheduleAppointment(id),
-			onSuccess: async () => await invalidate()
-		}),
-		delete: useMutation({
-			mutationFn: (id: string) => deleteAppointment(id),
-			onSuccess: async () => await invalidate()
-		})
-	}
+  return {
+    create: useMutation({
+      mutationFn: (data: z.infer<typeof appointmentSchema>) => createAppointment(data),
+      onSuccess: async () => await invalidate()
+    }),
+    update: useMutation({
+      mutationFn: ({ id, data }: { id: string; data: z.infer<typeof appointmentSchema> }) =>
+        updateAppointment(id, data),
+      onSuccess: async () => await invalidate()
+    }),
+    complete: useMutation({
+      mutationFn: (id: string) => completeAppointment(id),
+      onSuccess: async () => await invalidate()
+    }),
+    cancel: useMutation({
+      mutationFn: (id: string) => cancelAppointment(id),
+      onSuccess: async () => await invalidate()
+    }),
+    schedule: useMutation({
+      mutationFn: (id: string) => scheduleAppointment(id),
+      onSuccess: async () => await invalidate()
+    }),
+    delete: useMutation({
+      mutationFn: (id: string) => deleteAppointment(id),
+      onSuccess: async () => await invalidate()
+    })
+  }
 }

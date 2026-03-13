@@ -13,73 +13,73 @@ import ServiceTablePagination from '@/entities/service/ui/service-table-paginati
 import { useIsMobile } from '@/shared/lib/hooks/use-mobile'
 
 interface Props {
-	initPage: number
-	initLimit: number
-	initSearch: string
-	initStatus?: ServiceStatus | 'ALL'
+  initPage: number
+  initLimit: number
+  initSearch: string
+  initStatus?: ServiceStatus | 'ALL'
 }
 
 export default function ServiceTable({ initPage, initLimit, initSearch, initStatus }: Props) {
-	const isMobile = useIsMobile()
-	const mutations = useServiceMutations()
-	const page = useServiceStore((state) => state.page) ?? initPage
-	const limit = useServiceStore((state) => state.limit) ?? initLimit
-	const status = useServiceStore((state) => state.status) ?? initStatus
-	const search = useServiceStore((state) => state.search) ?? initSearch
+  const isMobile = useIsMobile()
+  const mutations = useServiceMutations()
+  const page = useServiceStore((state) => state.page) ?? initPage
+  const limit = useServiceStore((state) => state.limit) ?? initLimit
+  const status = useServiceStore((state) => state.status) ?? initStatus
+  const search = useServiceStore((state) => state.search) ?? initSearch
 
-	const {
-		data,
-		isFetching,
-		status: queryStatus
-	} = useQuery({
-		queryKey: ['services', { page, limit, search, status }],
-		queryFn: ({ signal }) =>
-			getServiceForTable(
-				{
-					status: status === 'ALL' ? undefined : status,
-					page,
-					limit,
-					search
-				},
-				signal
-			),
-		staleTime: 60 * 1000,
-		placeholderData: (prev) => prev,
-		enabled: !isMobile
-	})
+  const {
+    data,
+    isFetching,
+    status: queryStatus
+  } = useQuery({
+    queryKey: ['services', { page, limit, search, status }],
+    queryFn: ({ signal }) =>
+      getServiceForTable(
+        {
+          status: status === 'ALL' ? undefined : status,
+          page,
+          limit,
+          search
+        },
+        signal
+      ),
+    staleTime: 60 * 1000,
+    placeholderData: (prev) => prev,
+    enabled: !isMobile
+  })
 
-	const isAnyPending =
-		isFetching ||
-		mutations.archive.isPending ||
-		mutations.unarchive.isPending ||
-		mutations.delete.isPending
+  const isAnyPending =
+    isFetching ||
+    mutations.archive.isPending ||
+    mutations.unarchive.isPending ||
+    mutations.delete.isPending
 
-	if (queryStatus === 'pending') {
-		return <TableSkeleton rows={initLimit} columns={6} />
-	}
+  if (queryStatus === 'pending') {
+    return <TableSkeleton rows={initLimit} columns={6} />
+  }
 
-	if (queryStatus === 'error') {
-		return 'Error'
-	}
+  if (queryStatus === 'error') {
+    return 'Error'
+  }
 
-	return (
-		<>
-			<ServiceTableOptions initSearch={initSearch} initStatus={initStatus} />
-			<DataTable
-				isFetching={isAnyPending}
-				columns={getServiceColumns(mutations)}
-				data={data.items}
-				total={data.total}
-				pages={data.pages}
-				page={page ?? initPage}
-				limit={limit ?? initLimit}
-			/>
-			<ServiceTablePagination
-				pages={data.pages}
-				total={data.total}
-				initPage={initPage}
-				initLimit={initLimit}
-			/>
-		</>
-	)
+  return (
+    <>
+      <ServiceTableOptions initSearch={initSearch} initStatus={initStatus} />
+      <DataTable
+        isFetching={isAnyPending}
+        columns={getServiceColumns(mutations)}
+        data={data.items}
+        total={data.total}
+        pages={data.pages}
+        page={page ?? initPage}
+        limit={limit ?? initLimit}
+      />
+      <ServiceTablePagination
+        pages={data.pages}
+        total={data.total}
+        initPage={initPage}
+        initLimit={initLimit}
+      />
+    </>
+  )
 }

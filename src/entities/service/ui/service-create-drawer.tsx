@@ -1,12 +1,12 @@
 'use client'
 
 import {
-	Drawer,
-	DrawerClose,
-	DrawerContent,
-	DrawerHeader,
-	DrawerTitle,
-	DrawerTrigger
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger
 } from '@/shared/ui/shad-cn/drawer'
 import { Button } from '@/shared/ui/shad-cn/button'
 import { Plus } from 'lucide-react'
@@ -19,47 +19,47 @@ import { useServiceMutations } from '@/entities/service/model/use-service-mutati
 import { ServiceSchemaInput, ServiceSchemaOutput } from '@/entities/service/model/service-schema'
 
 export default function ServiceCreateDrawer() {
-	const [open, setOpen] = useState<boolean>(false)
+  const [open, setOpen] = useState<boolean>(false)
 
-	const form = useForm<ServiceSchemaInput, any, ServiceSchemaOutput>({
-		resolver: zodResolver(serviceSchema),
-		defaultValues: {
-			name: '',
-			price: '',
-			durationMin: '',
-			description: ''
-		}
-	})
+  const form = useForm<ServiceSchemaInput, any, ServiceSchemaOutput>({
+    resolver: zodResolver(serviceSchema),
+    defaultValues: {
+      name: '',
+      price: '',
+      durationMin: '',
+      description: ''
+    }
+  })
 
-	const mutation = useServiceMutations().create
+  const mutation = useServiceMutations().create
 
-	const onSubmit = async (data: ServiceSchemaOutput) => {
-		mutation.mutate(data, {
-			onSuccess: () => {
-				setOpen(false)
-				form.reset()
-			}
-		})
-	}
+  const onSubmit = async (data: ServiceSchemaOutput) => {
+    mutation.mutate(data, {
+      onSuccess: () => {
+        setOpen(false)
+        form.reset()
+      }
+    })
+  }
 
-	return (
-		<Drawer open={open} onOpenChange={setOpen}>
-			<DrawerTrigger asChild>
-				<Button size={'icon'}>
-					<Plus />
-				</Button>
-			</DrawerTrigger>
-			<DrawerContent aria-describedby={undefined}>
-				<DrawerHeader>
-					<DrawerTitle>Add a new service</DrawerTitle>
-				</DrawerHeader>
-				<div className={'flex flex-col gap-4 p-4'}>
-					<ServiceCreateUpdateFrom form={form} onSubmit={onSubmit} mutation={mutation} />
-					<DrawerClose asChild>
-						<Button variant="outline">Cancel</Button>
-					</DrawerClose>
-				</div>
-			</DrawerContent>
-		</Drawer>
-	)
+  return (
+    <Drawer open={open} onOpenChange={setOpen}>
+      <DrawerTrigger asChild>
+        <Button size={'icon'}>
+          <Plus />
+        </Button>
+      </DrawerTrigger>
+      <DrawerContent aria-describedby={undefined}>
+        <DrawerHeader>
+          <DrawerTitle>Add a new service</DrawerTitle>
+        </DrawerHeader>
+        <div className={'flex flex-col gap-4 p-4'}>
+          <ServiceCreateUpdateFrom form={form} onSubmit={onSubmit} mutation={mutation} />
+          <DrawerClose asChild>
+            <Button variant="outline">Cancel</Button>
+          </DrawerClose>
+        </div>
+      </DrawerContent>
+    </Drawer>
+  )
 }

@@ -121,11 +121,11 @@
     @apply bg-background text-foreground;
   }
   button:not(:disabled),
-  [role="button"]:not(:disabled) {
+  [role='button']:not(:disabled) {
     cursor: pointer;
   }
   button,
-  [role="button"] {
+  [role='button'] {
     user-select: none;
   }
 }

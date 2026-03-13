@@ -1,5 +1,5 @@
 import { HydrationBoundary, QueryClient } from '@tanstack/react-query'
-import { dehydrate } from '@tanstack/query-core'
+import { dehydrate } from '@tanstack/react-query'
 import { getServerClientForTable } from '@/entities/client/api/get-server-client-for-table'
 import ClientView from '@/entities/client/ui/client-view'
 import { ClientStatus } from '@/entities/client/model/client-status.type'
